@@ -14,17 +14,18 @@ class PyBase(object):
             raise PyBaseException("Wrong hbase shell path")
 
     def __do(self, cmd):
-        with subprocess.Popen(["echo", cmd], stdout=subprocess.PIPE) as query:
-            with subprocess.Popen(
-                [self.__shell, "shell"], stdin=query.stdout, stdout=subprocess.PIPE
-            ) as result:
-                output = []
-                line = result.stdout.readline()
-                while line:
-                    output.append(line.strip())
-                    line = result.stdout.readline()
-                result.stdout.close()
-                return output
+        query = subprocess.Popen(["echo", cmd], stdout=subprocess.PIPE)
+        result = subprocess.Popen(
+            [self.__shell, "shell"], stdin=query.stdout, stdout=subprocess.PIPE
+        )
+        query.stdout.close()
+        output = []
+        line = result.stdout.readline()
+        while line:
+            output.append(line.strip())
+            line = result.stdout.readline()
+        result.stdout.close()
+        return output
 
     def do(self):
         output = self.__do("list")
