@@ -38,6 +38,7 @@ class PyBase(object):
             elif not stop:
                 if content == '':
                     stop = True
+                    self.__logger.debug("Setting breakpoint at: " + content)
                     line = result.stdout.readline()
                     continue
                 line = result.stdout.readline()
@@ -50,4 +51,4 @@ class PyBase(object):
 
     def do(self, cmd):
         output = self.__do(cmd)
-        print("Output: " + output)
+        print("Output: ", output)
