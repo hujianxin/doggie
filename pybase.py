@@ -16,7 +16,22 @@ class Cell(object):
 
 
 class Status(object):
-    pass
+    def __init__(self, servers: int, dead: int, average_load: float):
+        self.__servers = servers
+        self.__dead = dead
+        self.__average_load = average_load
+
+    @property
+    def servers(self) -> int:
+        return self.__servers
+
+    @property
+    def dead(self) -> int:
+        return self.__dead
+
+    @property
+    def average_dead(self) -> float:
+        return self.__average_load
 
 
 class PyBase(object):
@@ -45,8 +60,21 @@ class PyBase(object):
         return self.__do(cmd)
 
     # -------------general------------- #
-    def status(self):
-        pass
+    def status(self) -> Status:
+        status_pattern = re.compile(
+            r"(\d+?) servers, (\d+?) dead, (\d+?)\.(\d+?) average load"
+        )
+        status_cmd = 'status'
+        result = self.__do(status_cmd)
+        for item in result:
+            matched_item = status_pattern.match(item)
+            if matched_item:
+                servers = int(matched_item.group(1))
+                dead = int(matched_item.group(2))
+                average_load_1 = matched_item(3)
+                average_load_2 = matched_item(4)
+                average_load = float("{}.{}".format(average_load_1, average_load_2))
+                return Status(servers, dead, average_load)
 
     def version(self):
         pass
