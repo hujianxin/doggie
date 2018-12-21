@@ -10,7 +10,7 @@ class PyBaseException(Exception):
 class PyBase(object):
     def __init__(self, shell):
         self.__shell = shell
-        if os.path.exists(shell):
+        if not os.path.exists(shell):
             raise PyBaseException("Wrong hbase shell path")
 
     def __do(self, cmd):
