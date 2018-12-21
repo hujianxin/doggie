@@ -26,20 +26,23 @@ class PyBase(object):
         query.stdout.close()
         output = []
         line = result.stdout.readline()
-        start, stop = False, False
+        commit_succeeded, start, stop = False, False, False
         while line:
             content = line.strip()
             self.__logger.info("Query content: " + content)
-            if not start and not stop:
-                if content == '':
-                    start = True
+            if not start and not stop and not commit_succeeded:
+                if content == 'Commit Succeeded':
+                    commit_succeeded = True
                 line = result.stdout.readline()
                 continue
+            elif not start and not stop:
+                if content == '':
+                    start = True
+                    line = result.stdout.readline()
+                    continue
             elif not stop:
                 if content == '':
                     stop = True
-                    self.__logger.debug("Setting breakpoint at: " + content)
-                    line = result.stdout.readline()
                     continue
                 line = result.stdout.readline()
                 output.append(line.strip())
