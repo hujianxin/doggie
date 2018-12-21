@@ -1,3 +1,4 @@
+import re
 import os
 import logging
 import subprocess
@@ -29,7 +30,7 @@ class PyBase(object):
         commit_succeeded, start, stop = False, False, False
         while line:
             content = line.strip()
-            self.__logger.info("Query content: " + content)
+            self.__logger.debug("Query content: " + content)
             if not start and not stop and not commit_succeeded:
                 if content == 'Commit Succeeded':
                     commit_succeeded = True
@@ -41,7 +42,7 @@ class PyBase(object):
                     line = result.stdout.readline()
                     continue
             elif not stop:
-                if content == '':
+                if re.match(r'\d row\(s\) in \d+?.\d+? seconds') is not None:
                     stop = True
                     continue
                 line = result.stdout.readline()
