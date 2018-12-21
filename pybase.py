@@ -34,7 +34,7 @@ class PyBase(object):
                 if line.strip() == "Commit Succeeded":
                     start = True
                     result.stdout.readline()
-                    line = result.stdout.readline()
+                line = result.stdout.readline()
                 continue
             elif not stop:
                 output.append(line.strip())
