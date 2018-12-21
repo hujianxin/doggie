@@ -27,6 +27,6 @@ class PyBase(object):
         result.stdout.close()
         return output
 
-    def do(self):
-        output = self.__do("list")
+    def do(self, cmd):
+        output = self.__do(cmd)
         print(output)
