@@ -101,6 +101,7 @@ class PyBase(object):
                 average_load_2 = matched_item.group(4)
                 average_load = float("{}.{}".format(average_load_1, average_load_2))
                 return Status(servers, dead, average_load)
+        raise PyBaseException("no result")
 
     def version(self):
         pattern = re.compile(
@@ -113,9 +114,15 @@ class PyBase(object):
                 return Version(
                     matched_item.group(1), matched_item.group(2), matched_item.group(3)
                 )
+        raise PyBaseException("no result")
 
     def whoami(self):
-        return self.__do("whoami")
+        pattern = re.compile(r".*?@.*?")
+        result = self.__do("whoami")
+        for item in result:
+            if pattern.match(item):
+                return pattern.group(0)
+        raise PyBaseException("no result")
 
     # -------------dml------------- #
     def scan(self, cmd):
