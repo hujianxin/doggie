@@ -34,6 +34,7 @@ class PyBase(object):
             elif not stop:
                 if content == '':
                     stop = True
+                    line = result.stdout.readline()
                     continue
                 line = result.stdout.readline()
                 output.append(line.strip())
