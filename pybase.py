@@ -29,13 +29,14 @@ class PyBase(object):
             if not start and not stop:
                 if content == '':
                     start = True
+                line = result.stdout.readline()
                 continue
             elif not stop:
                 if content == '':
                     stop = True
                     continue
-                output.append(line.strip())
                 line = result.stdout.readline()
+                output.append(line.strip())
             if stop:
                 break
         result.stdout.close()
