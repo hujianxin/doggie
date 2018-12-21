@@ -13,6 +13,8 @@ class PyBase(object):
         self.__shell = shell
         if not os.path.exists(shell):
             raise PyBaseException("Wrong hbase shell path")
+        self.__logger = logging.getLogger(__name__)
+        self.__logger.setLevel(logging.DEBUG)
 
     def __do(self, cmd):
         query = subprocess.Popen(["echo", cmd], stdout=subprocess.PIPE)
@@ -25,7 +27,7 @@ class PyBase(object):
         start, stop = False, False
         while line:
             content = line.strip()
-            print("Query content: " + content)
+            self.__logger.info("Query content: " + content)
             if not start and not stop:
                 if content == '':
                     start = True
@@ -39,10 +41,11 @@ class PyBase(object):
                 line = result.stdout.readline()
                 output.append(line.strip())
             if stop:
+                self.__logger.debug("Breaking at: " + content)
                 break
         result.stdout.close()
         return output
 
     def do(self, cmd):
         output = self.__do(cmd)
-        print(output)
+        print("Output: " + output)
