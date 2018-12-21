@@ -120,8 +120,9 @@ class PyBase(object):
         pattern = re.compile(r".*?@.*?")
         result = self.__do("whoami")
         for item in result:
-            if pattern.match(item):
-                return pattern.group(0)
+            matched_item = pattern.match(item)
+            if matched_item:
+                return matched_item.group(0)
         raise PyBaseException("no result")
 
     # -------------dml------------- #
