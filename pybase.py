@@ -25,7 +25,7 @@ class PyBase(object):
         start, stop = False, False
         while line:
             content = line.strip()
-            logging.info("Query content: " + content)
+            print("Query content: " + content)
             if not start and not stop:
                 if content == '':
                     start = True
