@@ -42,7 +42,7 @@ class PyBase(object):
                     line = result.stdout.readline()
                     continue
             elif not stop:
-                if re.match(r'\d row\(s\) in \d+?.\d+? seconds') is not None:
+                if re.match(r'\d row\(s\) in \d+?.\d+? seconds', content) is not None:
                     stop = True
                     continue
                 line = result.stdout.readline()
