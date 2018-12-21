@@ -39,6 +39,28 @@ class Status(object):
         )
 
 
+class Version(object):
+    def __init__(self, version, revision, date_time):
+        self.__version = version
+        self.__revision = revision
+        self.__date_time = date_time
+
+    @property
+    def version(self):
+        return self.__version
+
+    @property
+    def revision(self):
+        return self.__revision
+
+    @property
+    def date_time(self):
+        return self.__date_time
+
+    def __str__(self):
+        return "{}, {}, {}".format(self.__version, self.__revision, self.__date_time)
+
+
 class PyBase(object):
     def __init__(self, shell):
         self.__shell = shell
@@ -69,8 +91,7 @@ class PyBase(object):
         status_pattern = re.compile(
             r"(\d+?) servers, (\d+?) dead, (\d+?)\.(\d+?) average load"
         )
-        status_cmd = "status"
-        result = self.__do(status_cmd)
+        result = self.__do("status")
         for item in result:
             matched_item = status_pattern.match(item)
             if matched_item:
@@ -82,7 +103,16 @@ class PyBase(object):
                 return Status(servers, dead, average_load)
 
     def version(self):
-        pass
+        version_pattern = re.compile(
+            r"(.*?), (.*?), (\S\S\S \S\S\S \d\d \d\d:\d\d:\d\d \w+? \d\d\d\d)"
+        )
+        result = self.__do("version")
+        for item in result:
+            matched_item = version_pattern.match(item)
+            if matched_item:
+                return Version(
+                    matched_item.group(1), matched_item.group(2), matched_item.group(3)
+                )
 
     def whoami(self):
         pass
