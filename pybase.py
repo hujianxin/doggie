@@ -16,21 +16,21 @@ class Cell(object):
 
 
 class Status(object):
-    def __init__(self, servers: int, dead: int, average_load: float):
+    def __init__(self, servers, dead, average_load):
         self.__servers = servers
         self.__dead = dead
         self.__average_load = average_load
 
     @property
-    def servers(self) -> int:
+    def servers(self):
         return self.__servers
 
     @property
-    def dead(self) -> int:
+    def dead(self):
         return self.__dead
 
     @property
-    def average_dead(self) -> float:
+    def average_dead(self):
         return self.__average_load
 
 
@@ -60,7 +60,7 @@ class PyBase(object):
         return self.__do(cmd)
 
     # -------------general------------- #
-    def status(self) -> Status:
+    def status(self):
         status_pattern = re.compile(
             r"(\d+?) servers, (\d+?) dead, (\d+?)\.(\d+?) average load"
         )
