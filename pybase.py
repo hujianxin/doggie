@@ -120,7 +120,7 @@ class PyBase(object):
         result = self.__do("whoami")
         matched = False
         for item in result:
-            if item == 'whoami':
+            if item == "whoami":
                 matched = True
                 continue
             if matched:
@@ -128,7 +128,20 @@ class PyBase(object):
         raise PyBaseException("no result")
 
     # -------------dml------------- #
-    def scan(self, cmd):
+    def scan(
+        self,
+        table,
+        columns=None,
+        limit=None,
+        startrow=None,
+        endrow=None,
+        time_range=None,
+        reversed=False,
+        debug=False,
+        filter=None,
+        attributes={},
+        authorizations=[],
+    ):
         output = self.__do(cmd)
         print("Output: ", output)
 
