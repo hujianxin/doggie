@@ -2,6 +2,8 @@ import os
 import logging
 import subprocess
 
+logging.basicConfig()
+
 
 class PyBaseException(Exception):
     def __init__(self, message):
