@@ -117,12 +117,14 @@ class PyBase(object):
         raise PyBaseException("no result")
 
     def whoami(self):
-        pattern = re.compile(r"(.*?)@(.*?)")
         result = self.__do("whoami")
+        matched = False
         for item in result:
-            matched_item = pattern.match(item)
-            if matched_item:
-                return matched_item.group(0)
+            if item == 'whoami':
+                matched = True
+                continue
+            if matched:
+                return item
         raise PyBaseException("no result")
 
     # -------------dml------------- #
