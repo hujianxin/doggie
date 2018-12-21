@@ -1,4 +1,5 @@
 import os
+import logging
 import subprocess
 
 
@@ -23,13 +24,14 @@ class PyBase(object):
         line = result.stdout.readline()
         start, stop = False, False
         while line:
-            tmp = line.strip()
+            content = line.strip()
+            logging.info("Query content: " + content)
             if not start and not stop:
-                if tmp == '':
+                if content == '':
                     start = True
                 continue
             elif not stop:
-                if tmp == '':
+                if content == '':
                     stop = True
                     continue
                 output.append(line.strip())
