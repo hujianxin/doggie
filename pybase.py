@@ -11,6 +11,14 @@ class PyBaseException(Exception):
         self.message = message
 
 
+class Cell(object):
+    pass
+
+
+class Status(object):
+    pass
+
+
 class PyBase(object):
     def __init__(self, shell):
         self.__shell = shell
@@ -27,33 +35,41 @@ class PyBase(object):
         query.stdout.close()
         output = []
         line = result.stdout.readline()
-        start, stop = False, False
         while line:
-            self.__logger.debug("Query content: " + line.strip())
-            if not start and not stop:
-                if line.strip() == "Commit Succeeded":
-                    start = True
-                    result.stdout.readline()
-                line = result.stdout.readline()
-                continue
-            elif not stop:
-                if (
-                    re.match(r"\d+? row\(s\) in \d+?\.\d+? seconds", line.strip())
-                    is not None
-                ):
-                    stop = True
-                    continue
-                output.append(line.strip())
-                line = result.stdout.readline()
-            if stop:
-                self.__logger.debug("Breaking at: " + line.strip())
-                break
+            output.append(line.strip())
+            line = result.stdout.readline()
         result.stdout.close()
         return output
 
+    def do(self, cmd):
+        return self.__do(cmd)
+
+    # -------------general------------- #
     def status(self):
         pass
 
-    def list(self, cmd):
+    def version(self):
+        pass
+
+    def whoami(self):
+        pass
+
+    # -------------dml------------- #
+    def scan(self, cmd):
         output = self.__do(cmd)
         print("Output: ", output)
+
+    def get(self):
+        pass
+
+    def put(self):
+        pass
+
+    # -------------tools------------- #
+    # -------------ddl------------- #
+    # -------------namespace------------- #
+    # -------------snapshot------------- #
+    # -------------replication------------- #
+    # -------------quotas------------- #
+    # -------------security------------- #
+    # -------------visibility labels------------- #
