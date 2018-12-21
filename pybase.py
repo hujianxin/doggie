@@ -33,6 +33,11 @@ class Status(object):
     def average_dead(self):
         return self.__average_load
 
+    def __str__(self):
+        return "{} servers, {} dead, {} average load".format(
+            self.__servers, self.__dead, self.__average_load
+        )
+
 
 class PyBase(object):
     def __init__(self, shell):
@@ -64,7 +69,7 @@ class PyBase(object):
         status_pattern = re.compile(
             r"(\d+?) servers, (\d+?) dead, (\d+?)\.(\d+?) average load"
         )
-        status_cmd = 'status'
+        status_cmd = "status"
         result = self.__do(status_cmd)
         for item in result:
             matched_item = status_pattern.match(item)
