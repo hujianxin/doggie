@@ -88,12 +88,12 @@ class PyBase(object):
 
     # -------------general------------- #
     def status(self):
-        status_pattern = re.compile(
+        pattern = re.compile(
             r"(\d+?) servers, (\d+?) dead, (\d+?)\.(\d+?) average load"
         )
         result = self.__do("status")
         for item in result:
-            matched_item = status_pattern.match(item)
+            matched_item = pattern.match(item)
             if matched_item:
                 servers = int(matched_item.group(1))
                 dead = int(matched_item.group(2))
@@ -103,19 +103,19 @@ class PyBase(object):
                 return Status(servers, dead, average_load)
 
     def version(self):
-        version_pattern = re.compile(
+        pattern = re.compile(
             r"(.*?), (.*?), (\S\S\S \S\S\S \d\d \d\d:\d\d:\d\d \w+? \d\d\d\d)"
         )
         result = self.__do("version")
         for item in result:
-            matched_item = version_pattern.match(item)
+            matched_item = pattern.match(item)
             if matched_item:
                 return Version(
                     matched_item.group(1), matched_item.group(2), matched_item.group(3)
                 )
 
     def whoami(self):
-        pass
+        return self.__do("whoami")
 
     # -------------dml------------- #
     def scan(self, cmd):
