@@ -37,15 +37,14 @@ class PyBase(object):
                     line = result.stdout.readline()
                 continue
             elif not stop:
+                output.append(line.strip())
+                line = result.stdout.readline()
                 if (
                     re.match(r"\d+? row\(s\) in \d+?\.\d+? seconds", line.strip())
                     is not None
                 ):
                     stop = True
                     continue
-            else:
-                line = result.stdout.readline()
-                output.append(line.strip())
             if stop:
                 self.__logger.debug("Breaking at: " + line.strip())
                 break
