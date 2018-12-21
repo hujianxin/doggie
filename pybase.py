@@ -21,9 +21,21 @@ class PyBase(object):
         query.stdout.close()
         output = []
         line = result.stdout.readline()
+        start, stop = False, False
         while line:
-            output.append(line.strip())
-            line = result.stdout.readline()
+            tmp = line.strip()
+            if not start and not stop:
+                if tmp == '':
+                    start = True
+                continue
+            elif not stop:
+                if tmp == '':
+                    stop = True
+                    continue
+                output.append(line.strip())
+                line = result.stdout.readline()
+            elif stop:
+                break
         result.stdout.close()
         return output
 
