@@ -27,28 +27,27 @@ class PyBase(object):
         query.stdout.close()
         output = []
         line = result.stdout.readline()
-        commit_succeeded, start, stop = False, False, False
+        start, stop = False, False
         while line:
-            content = line.strip()
-            self.__logger.debug("Query content: " + content)
-            if not start and not stop and not commit_succeeded:
-                if content == 'Commit Succeeded':
-                    commit_succeeded = True
-                line = result.stdout.readline()
-                continue
-            elif not start and not stop:
-                if content == '':
+            self.__logger.debug("Query content: " + line.strip())
+            if not start and not stop:
+                if line.strip() == "Commit Succeeded":
                     start = True
+                    result.stdout.readline()
                     line = result.stdout.readline()
-                    continue
+                continue
             elif not stop:
-                if re.match(r'\d+? row\(s\) in \d+?.\d+? seconds', content) is not None:
+                if (
+                    re.match(r"\d+? row\(s\) in \d+?\.\d+? seconds", line.strip())
+                    is not None
+                ):
                     stop = True
                     continue
+            else:
                 line = result.stdout.readline()
                 output.append(line.strip())
             if stop:
-                self.__logger.debug("Breaking at: " + content)
+                self.__logger.debug("Breaking at: " + line.strip())
                 break
         result.stdout.close()
         return output
