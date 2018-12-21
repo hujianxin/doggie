@@ -71,8 +71,8 @@ class PyBase(object):
             if matched_item:
                 servers = int(matched_item.group(1))
                 dead = int(matched_item.group(2))
-                average_load_1 = matched_item(3)
-                average_load_2 = matched_item(4)
+                average_load_1 = matched_item.group(3)
+                average_load_2 = matched_item.group(4)
                 average_load = float("{}.{}".format(average_load_1, average_load_2))
                 return Status(servers, dead, average_load)
 
