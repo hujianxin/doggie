@@ -117,7 +117,7 @@ class PyBase(object):
         raise PyBaseException("no result")
 
     def whoami(self):
-        pattern = re.compile(r".*?@.*?")
+        pattern = re.compile(r"(.*?)@(.*?)")
         result = self.__do("whoami")
         for item in result:
             matched_item = pattern.match(item)
