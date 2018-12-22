@@ -107,7 +107,9 @@ class PyBase(object):
         pattern = re.compile(
             r"(.*?), (.*?), (\S\S\S \S\S\S \d\d \d\d:\d\d:\d\d \w+? \d\d\d\d)"
         )
-        result = self.__do("version")
+        cmd = "version"
+        self.__log_execute(cmd)
+        result = self.__do(cmd)
         for item in result:
             matched_item = pattern.match(item)
             if matched_item:
@@ -117,7 +119,9 @@ class PyBase(object):
         raise PyBaseException("no result")
 
     def whoami(self):
-        result = self.__do("whoami")
+        cmd = "whoami"
+        self.__log_execute(cmd)
+        result = self.__do(cmd)
         matched = False
         for item in result:
             if item == "whoami":
@@ -139,8 +143,6 @@ class PyBase(object):
         reversed=False,
         debug=False,
         filter=None,
-        attributes={},
-        authorizations=[],
     ):
         output = self.__do("")
         print("Output: ", output)
@@ -175,17 +177,22 @@ class PyBase(object):
         if "{" in base_cmd:
             length = len(base_cmd)
             base_cmd = base_cmd[0 : length - 2] + "}"
-        self.__logger.info("Executing command: {}".format(base_cmd))
-        return self.__do(base_cmd)
+        self.__log_execute(base_cmd)
+        result = self.__do(base_cmd)
+        for item in result:
+            pass
 
     def put(self):
         pass
 
-    # -------------tools------------- #
-    # -------------ddl------------- #
-    # -------------namespace------------- #
-    # -------------snapshot------------- #
-    # -------------replication------------- #
-    # -------------quotas------------- #
-    # -------------security------------- #
-    # -------------visibility labels------------- #
+    def __log_execute(self, message):
+        self.__logger.info("Executing command: {}".message)
+
+    # -------------tools-------------
+    # -------------ddl-------------
+    # -------------namespace-------------
+    # -------------snapshot-------------
+    # -------------replication-------------
+    # -------------quotas-------------
+    # -------------security-------------
+    # -------------visibility labels-------------
