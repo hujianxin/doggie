@@ -155,7 +155,7 @@ class PyBase(object):
         versions=None,
         filter=None,
     ):
-        base_cmd = "get {}, {}".format(table, rowkey)
+        base_cmd = "get '{}', '{}'".format(table, rowkey)
         if column or timestamp or timerange or versions or filter:
             base_cmd += ", {"
         if column:
