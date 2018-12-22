@@ -179,6 +179,11 @@ class PyBase(object):
             base_cmd = base_cmd[0 : length - 2] + "}"
         self.__log_execute(base_cmd)
         result = self.__do(base_cmd)
+
+        start_pattern = re.compile(r"")
+        stop_pattern = re.compile(r"")
+
+        start, stop = False, False
         for item in result:
             pass
 
