@@ -158,8 +158,12 @@ class PyBase(object):
         base_cmd = "get '{}', '{}'".format(table, rowkey)
         if column or timestamp or timerange or versions or filter:
             base_cmd += ", {"
-        if column:
+        if column and isinstance(column, str):
+            base_cmd += "COLUMN => '{}', ".format(column)
+        elif column and isinstance(column, list):
             base_cmd += "COLUMN => {}, ".format(column)
+        elif column:
+            raise PyBaseException("Wrong column format")
         if timestamp:
             base_cmd += "TIMESTAMP => {}, ".format(timestamp)
         if timerange:
@@ -172,6 +176,7 @@ class PyBase(object):
             length = len(base_cmd)
             base_cmd = base_cmd[0 : length - 2] + "}"
         self.__logger.info("Executing command: {}".format(base_cmd))
+        return self.__do(base_cmd)
 
     def put(self):
         pass
