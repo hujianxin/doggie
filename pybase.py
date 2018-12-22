@@ -142,11 +142,36 @@ class PyBase(object):
         attributes={},
         authorizations=[],
     ):
-        output = self.__do(cmd)
+        output = self.__do("")
         print("Output: ", output)
 
-    def get(self):
-        pass
+    def get(
+        self,
+        table,
+        rowkey,
+        column=None,
+        timestamp=None,
+        timerange=None,
+        versions=None,
+        filter=None,
+    ):
+        base_cmd = "get {}, {}".format(table, rowkey)
+        if column or timestamp or timerange or versions or filter:
+            base_cmd += ", {"
+        if column:
+            base_cmd += "COLUMN => {}, ".format(column)
+        if timestamp:
+            base_cmd += "TIMESTAMP => {}, ".format(timestamp)
+        if timerange:
+            base_cmd += "TIMERANGE => {}, ".format(timerange)
+        if versions:
+            base_cmd += "VERSIONS => {}, ".format(versions)
+        if filter:
+            base_cmd += 'FILTER => "{}", '.format(filter)
+        if "{" in base_cmd:
+            length = len(base_cmd)
+            base_cmd = base_cmd[0 : length - 2] + "}"
+        self.__logger.info("Executing command: {}".format(base_cmd))
 
     def put(self):
         pass
