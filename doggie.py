@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pybase
+    doggie
     ~~~~~~~~~
     This module provides the interface for interacting when HBase shell.
     :copyright: © 2018 by hujianxin
@@ -109,7 +109,7 @@ class Version(object):
         return "{}, {}, {}".format(self.__version, self.__revision, self.__date_time)
 
 
-class PyBase(object):
+class Doggie(object):
     def __init__(self, shell):
         self.__shell = shell
         if not os.path.exists(shell):

@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name="pybase",
+    name="doggie",
     version="0.1",
     author="hujianxin",
     author_email="hujianxincn@foxmail.com",

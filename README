@@ -1,7 +1,7 @@
-Pybase is a library for Python to interact with HBase Shell
+Doggie is a library for Python to interact with HBase Shell
 =================================================
 
-In many cases, developer can not play with HBase thrift server, they can just use hbase in `hbase shell way`. If you are one of them, `pybase` is for you.
+In many cases, developer can not play with HBase thrift server, they can just use hbase in `hbase shell way`. If you are one of them, `doggie` is for you.
 
-WIP, but some useful function has been completed. If the current status of `pybase` does not meet your renewal, Pull Request is welcomed, thanks!
+WIP, but some useful function has been completed. If the current status of `doggie` does not meet your renewal, Pull Request is welcomed, thanks!
 
