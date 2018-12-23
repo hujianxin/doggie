@@ -289,6 +289,7 @@ class Doggie(object):
                 break
             matched_item = pattern.match(item)
             if matched_item:
+                self.__logger.debug("Matched item: {}".format(matched_item.group(0)))
                 cell = ScanCell(
                     matched_item.group(1),
                     matched_item.group(2),
