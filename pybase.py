@@ -228,7 +228,7 @@ class PyBase(object):
         pass
 
     def __log_execute(self, message):
-        self.__logger.info("Executing command: {}".message)
+        self.__logger.info("Executing command: {}".format(message))
 
     # -------------tools-------------
     # -------------ddl-------------
