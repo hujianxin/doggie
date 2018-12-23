@@ -199,6 +199,7 @@ class PyBase(object):
             base_cmd = base_cmd[0 : length - 2] + "}"
         self.__log_execute(base_cmd)
         execute_result = self.__do(base_cmd)
+        self.__logger.debug("Executed result: {}".format(execute_result))
 
         start_pattern = re.compile(r"COLUMN\s+?CELL")
         stop_pattern = re.compile(r"\d+? rows\(s\) in \d+?\.\d+? seconds")
