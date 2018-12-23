@@ -208,6 +208,7 @@ class PyBase(object):
         start = False
         result = []
         for item in execute_result:
+            self.__logger.debug("Getting process item: {}".format(item))
             if not start:
                 if start_pattern.match(item):
                     self.__logger.info("Getting started at: {}".format(item))
