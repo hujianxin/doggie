@@ -12,7 +12,27 @@ class PyBaseException(Exception):
 
 
 class Cell(object):
-    pass
+    def __init__(self, row, column, timestamp, value):
+        self.__row = row
+        self.__column = column
+        self.__timestamp = timestamp
+        self.__value = value
+
+    @property
+    def row(self):
+        return self.__row
+
+    @property
+    def column(self):
+        return self.__column
+
+    @property
+    def timestamp(self):
+        return self.__timestamp
+
+    @property
+    def value(self):
+        return self.__value
 
 
 class Status(object):
@@ -178,14 +198,31 @@ class PyBase(object):
             length = len(base_cmd)
             base_cmd = base_cmd[0 : length - 2] + "}"
         self.__log_execute(base_cmd)
-        result = self.__do(base_cmd)
+        execute_result = self.__do(base_cmd)
 
-        start_pattern = re.compile(r"")
-        stop_pattern = re.compile(r"")
+        start_pattern = re.compile(r"ROW\s+?COLUMN\+CELL")
+        stop_pattern = re.compile(r"\d+? rows\(s\) in \d+?\.\d+? seconds")
+        pattern = re.compile(r"(\d+?)\s+?column=(.*?), timestamp=(.*?), value=(.*?)")
 
-        start, stop = False, False
-        for item in result:
-            pass
+        start = False
+        result = []
+        for item in execute_result:
+            if not start:
+                if start_pattern.match(item):
+                    start = True
+                continue
+            if stop_pattern.match(item):
+                break
+            matched_item = pattern.match(item)
+            if matched_item:
+                cell = Cell(
+                    matched_item.group(1),
+                    matched_item.group(2),
+                    matched_item.group(3),
+                    matched_item.group(4),
+                )
+                result.append(cell)
+        return result
 
     def put(self):
         pass
