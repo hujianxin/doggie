@@ -203,7 +203,7 @@ class PyBase(object):
 
         start_pattern = re.compile(r"COLUMN\s+?CELL")
         stop_pattern = re.compile(r"\d+? rows\(s\) in \d+?\.\d+? seconds")
-        pattern = re.compile(r"(\d+?)\s+?column=(.*?), timestamp=(.*?), value=(.*?)")
+        pattern = re.compile(r"(.*?)\s+?column=(.*?), timestamp=(.*?), value=(.*?)")
 
         start = False
         result = []
