@@ -337,8 +337,17 @@ class PyBase(object):
                 result.append(cell)
         return result
 
-    def put(self):
-        pass
+    def put(self, table, rowkey, column, value, timestamp=None):
+        base_cmd = "put '{}', '{}', '{}', '{}', ".format(table, rowkey, column, value)
+        if timestamp:
+            base_cmd += '{}, '.format(timestamp)
+
+        length = len(base_cmd)
+        base_cmd = base_cmd[0 : length - 2]
+
+        self.__log_execute(base_cmd)
+        execute_result = self.__do(base_cmd)
+        self.__logger.debug("Executed result: {}".format(execute_result))
 
     def __log_execute(self, message):
         self.__logger.info("Executing command: {}".format(message))
