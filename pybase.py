@@ -200,7 +200,7 @@ class PyBase(object):
         self.__log_execute(base_cmd)
         execute_result = self.__do(base_cmd)
 
-        start_pattern = re.compile(r"ROW\s+?COLUMN\+CELL")
+        start_pattern = re.compile(r"COLUMN\s+?CELL")
         stop_pattern = re.compile(r"\d+? rows\(s\) in \d+?\.\d+? seconds")
         pattern = re.compile(r"(\d+?)\s+?column=(.*?), timestamp=(.*?), value=(.*?)")
 
