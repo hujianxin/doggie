@@ -43,6 +43,11 @@ class ScanCell(object):
     def value(self):
         return self.__value
 
+    def __str__(self):
+        return "{}: column=({}), timestamp=({}), value=({})".format(
+            self.__row, self.__column, self.__timestamp, self.__value
+        )
+
 
 class GetCell(object):
     def __init__(self, column, timestamp, value):
@@ -61,6 +66,11 @@ class GetCell(object):
     @property
     def value(self):
         return self.__value
+
+    def __str__(self):
+        return "column=({}), timestamp=({}), value=({})".format(
+            self.__column, self.__timestamp, self.__value
+        )
 
 
 class Status(object):
@@ -349,7 +359,7 @@ class Doggie(object):
     def put(self, table, rowkey, column, value, timestamp=None):
         base_cmd = "put '{}', '{}', '{}', '{}', ".format(table, rowkey, column, value)
         if timestamp:
-            base_cmd += '{}, '.format(timestamp)
+            base_cmd += "{}, ".format(timestamp)
 
         length = len(base_cmd)
         base_cmd = base_cmd[0 : length - 2]
