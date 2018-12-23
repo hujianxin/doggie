@@ -183,8 +183,101 @@ class PyBase(object):
         debug=False,
         filter=None,
     ):
-        output = self.__do("")
-        print("Output: ", output)
+        base_cmd = "scan '{}'".format(table)
+        if columns or limit or startrow or time_range or reversed or debug or filter:
+            base_cmd += ", {"
+
+        if columns and isinstance(columns, str):
+            base_cmd += "COLUMNS => '{}', ".format(columns)
+        elif columns and isinstance(columns, list):
+            base_cmd += "COLUMNS => {}, ".format(columns)
+        elif columns:
+            raise PyBaseException("Wrong COLUMNS format")
+
+        if limit and not isinstance(limit, int):
+            raise PyBaseException("Wrong LIMIT format")
+        elif limit:
+            base_cmd += "LIMIT => {}, ".format(limit)
+
+        if startrow and not isinstance(startrow, str):
+            raise PyBaseException("Wrong STARTROW format")
+        elif startrow:
+            base_cmd += "STARTROW => '{}', ".format(startrow)
+
+        if endrow and not isinstance(endrow, str):
+            raise PyBaseException("Wrong ENDROW format")
+        elif endrow:
+            base_cmd += "ENDROW => '{}', ".format(endrow)
+
+        if time_range:
+            if not isinstance(time_range, list) or len(time_range) != 2:
+                raise PyBaseException("Wrong TIMERANGE format")
+            else:
+                base_cmd += "TIMERANGE => {}, ".format(time_range)
+
+        if reversed:
+            real_reversed = "false"
+            if isinstance(reversed, bool):
+                if reversed:
+                    real_reversed = "true"
+            elif not isinstance(reversed, str):
+                raise PyBaseException("Wrong REVERSED format")
+            elif not reversed == "true" and not reversed == "false":
+                raise PyBaseException("Wrong REVERSED format")
+            else:
+                real_reversed = reversed
+            base_cmd += "REVERSED => '{}', ".format(real_reversed)
+
+        if debug:
+            real_debug = "false"
+            if isinstance(debug, bool):
+                if debug:
+                    real_debug = "true"
+            elif not isinstance(debug, str):
+                raise PyBaseException("Wrong DEBUG format")
+            elif not debug == "true" and not debug == "false":
+                raise PyBaseException("Wrong DEBUG format")
+            else:
+                real_debug = debug
+            base_cmd += "DEBUG => '{}', ".format(real_debug)
+
+        if filter:
+            base_cmd += 'FILTER => "{}", '.format(filter)
+
+        if "{" in base_cmd:
+            length = len(base_cmd)
+            base_cmd = base_cmd[0 : length - 2] + "}"
+
+        self.__log_execute(base_cmd)
+        execute_result = self.__do(base_cmd)
+        self.__logger.debug("Executed result: {}".format(execute_result))
+
+        start_pattern = re.compile(r"ROW\s+?COLUMN\+CELL")
+        stop_pattern = re.compile(r"\d+? rows\(s\) in \d+?\.\d+? seconds")
+        pattern = re.compile(r"(.*?)\s+?column=(.*?), timestamp=(.*?), value=(.*?)")
+
+        start = False
+        result = []
+        for item in execute_result:
+            self.__logger.debug("Getting process item: {}".format(item))
+            if not start:
+                if start_pattern.match(item):
+                    self.__logger.info("Getting started at: {}".format(item))
+                    start = True
+                continue
+            if stop_pattern.match(item):
+                self.__logger.info("Getting stopped at: {}".format(item))
+                break
+            matched_item = pattern.match(item)
+            if matched_item:
+                cell = ScanCell(
+                    matched_item.group(1),
+                    matched_item.group(2),
+                    matched_item.group(3),
+                    matched_item.group(4),
+                )
+                result.append(cell)
+        return result
 
     def get(
         self,
@@ -239,9 +332,7 @@ class PyBase(object):
             matched_item = pattern.match(item)
             if matched_item:
                 cell = GetCell(
-                    matched_item.group(1),
-                    matched_item.group(2),
-                    matched_item.group(3),
+                    matched_item.group(1), matched_item.group(2), matched_item.group(3)
                 )
                 result.append(cell)
         return result
