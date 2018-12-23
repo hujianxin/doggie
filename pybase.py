@@ -210,9 +210,11 @@ class PyBase(object):
         for item in execute_result:
             if not start:
                 if start_pattern.match(item):
+                    self.__logger.info("Getting started at: {}".format(item))
                     start = True
                 continue
             if stop_pattern.match(item):
+                self.__logger.info("Getting stopped at: {}".format(item))
                 break
             matched_item = pattern.match(item)
             if matched_item:
