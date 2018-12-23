@@ -11,7 +11,7 @@ class PyBaseException(Exception):
         self.message = message
 
 
-class Cell(object):
+class ScanCell(object):
     def __init__(self, row, column, timestamp, value):
         self.__row = row
         self.__column = column
@@ -21,6 +21,25 @@ class Cell(object):
     @property
     def row(self):
         return self.__row
+
+    @property
+    def column(self):
+        return self.__column
+
+    @property
+    def timestamp(self):
+        return self.__timestamp
+
+    @property
+    def value(self):
+        return self.__value
+
+
+class GetCell(object):
+    def __init__(self, column, timestamp, value):
+        self.__column = column
+        self.__timestamp = timestamp
+        self.__value = value
 
     @property
     def column(self):
@@ -203,7 +222,7 @@ class PyBase(object):
 
         start_pattern = re.compile(r"COLUMN\s+?CELL")
         stop_pattern = re.compile(r"\d+? rows\(s\) in \d+?\.\d+? seconds")
-        pattern = re.compile(r"(.*?)\s+?column=(.*?), timestamp=(.*?), value=(.*?)")
+        pattern = re.compile(r"(.*?)\s+?timestamp=(.*?), value=(.*?)")
 
         start = False
         result = []
@@ -219,11 +238,10 @@ class PyBase(object):
                 break
             matched_item = pattern.match(item)
             if matched_item:
-                cell = Cell(
+                cell = GetCell(
                     matched_item.group(1),
                     matched_item.group(2),
                     matched_item.group(3),
-                    matched_item.group(4),
                 )
                 result.append(cell)
         return result
