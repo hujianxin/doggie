@@ -273,7 +273,7 @@ class Doggie(object):
 
         start_pattern = re.compile(r"ROW\s+?COLUMN\+CELL")
         stop_pattern = re.compile(r"\d+? rows\(s\) in \d+?\.\d+? seconds")
-        pattern = re.compile(r"(.*?)\s+?column=(.*?), timestamp=(.*?), value=(.*?)")
+        pattern = re.compile(r"(.*?)\s+?column=(.*?), timestamp=(.*?), value=(.*)")
 
         start = False
         result = []
