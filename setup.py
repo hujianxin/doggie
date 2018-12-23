@@ -8,6 +8,5 @@ setup(
     include_package_data=True,
     install_requires=[],
     license="Apache License",
-    packages=["pybase"],
     description="Python library for interacting to hbase shell",
 )

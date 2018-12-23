@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+    pybase
+    ~~~~~~~~~
+    This module provides the interface for interacting when HBase shell.
+    :copyright: © 2018 by hujianxin
+    :license: Apache, see LICENSE for more details.
+"""
+
 import re
 import os
 import logging
